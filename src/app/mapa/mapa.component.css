@@ -1,0 +1,79 @@
+.form {
+  z-index: 2;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  opacity: 0.3;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.form:hover {
+  opacity: 1;
+  animation-name: fade;
+  animation-duration: 0.5s;
+}
+
+.segment {
+  min-width: 400px;
+}
+
+#head {
+  min-height: 50px;
+}
+
+#route {
+  opacity: 0.8;
+}
+
+#route:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+#logout {
+  position: absolute;
+  top: 50px;
+  right: 100px;
+  opacity: 0.3;
+}
+
+#logout:hover {
+  opacity: 1;
+  animation-name: fade;
+  animation-duration: 0.5s;
+}
+
+@keyframes load {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#loading {
+  animation-name: load;
+  animation-duration: 0.5s;
+  padding-top: 500px;
+  padding-left: 200px;
+  padding-right: 200px;
+  z-index: 3;
+  position: absolute;
+  top: -50px;
+  left: 0px;
+  height: 1200px;
+  width: 2000px;
+}
+
+#loading span {
+  font-size: 500%;
+}

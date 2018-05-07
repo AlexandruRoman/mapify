@@ -1,0 +1,3 @@
+<app-mapa *ngIf="logged && loaded" (out)="logout($event)"></app-mapa>
+<app-loading-welcome *ngIf="logged && !loaded" (loaded)="load($event)"></app-loading-welcome>
+<app-login *ngIf="!logged" (loggedIn)="login($event)"></app-login>

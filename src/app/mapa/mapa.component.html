@@ -1,0 +1,170 @@
+<div class="form">
+  <div class="ui top blue attached primary segment" id="head">
+    <div class="ui grid">
+      <div class="four wide column">
+        <button class="circular huge ui blue icon button" [ngClass]="{'basic': route.travel !== '0'}" (click)="route.travel = '0'">
+          <i class="icon car"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.travel !== '1'}" (click)="route.travel = '1'">
+          <i class="icon male"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.travel !== '2'}" (click)="route.travel = '2'">
+          <i class="icon bicycle"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.travel !== '3'}" (click)="route.travel = '3'">
+          <i class="icon subway"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ui attached blue secondary segment" id="head">
+    <div class="ui grid">
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.heuristic !== '1'}" (click)="route.heuristic = '1'">
+          <i class="icon hourglass half"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.heuristic !== '2'}" (click)="route.heuristic = '2'">
+          <i class="icon leaf"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.heuristic !== '3'}" (click)="route.heuristic = '3'">
+          <i class="icon sun"></i>
+        </button>
+      </div>
+      <div class="four wide column">
+        <button class="circular huge ui icon blue basic button" [ngClass]="{'basic': route.heuristic !== '4'}" (click)="route.heuristic = '4'">
+          <i class="icon road"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div class="ui attached blue segment">
+    <div class="ui left huge action fluid input">
+      <button class="ui green large icon button">
+        <i class="map pin icon"></i>
+      </button>
+      <input places-auto-complete (place_changed)="startChanged($event)" [types]="['geocode']" />
+    </div>
+    <br>
+    <div class="ui left huge action fluid input">
+      <button class="ui orange large icon button">
+        <i class="marker icon"></i>
+      </button>
+      <input places-auto-complete placeholder="End location" (place_changed)="endChanged($event)" [types]="['geocode']" />
+    </div>
+    <br>
+  </div>
+  <button (click)="sendRoute()" class="ui primary bottom fluid purple huge attached button">
+    <i class="search icon"></i> Go! </button>
+  <div *ngFor="let direction of directions; let i = index" class="ui blue attached segment" id="route" (click)="selectedRoute = i">
+    <h3>Via {{infos[i].description}}</h3>
+    <div class="info" *ngIf="selectedRoute === i">
+
+      <!-- score -->
+      <div class="ui grid">
+        <div class="two wide column">
+          <i class="icon large line chart"></i>
+        </div>
+        <div class="fourteen wide column">
+          <sui-progress class="indicating small" [value]="infos[i].score">Overall</sui-progress>
+        </div>
+      </div>
+
+      <!-- weatherScore -->
+      <div class="ui grid">
+        <div class="two wide column">
+          <i class="icon large sun"></i>
+        </div>
+        <div class="fourteen wide column">
+          <sui-progress class="indicating small" [value]="infos[i].weatherScore"></sui-progress>
+        </div>
+      </div>
+
+      <!-- air score -->
+      <div class="ui grid">
+        <div class="two wide column">
+          <i class="icon large leaf"></i>
+        </div>
+        <div class="fourteen wide column">
+          <sui-progress class="indicating small" [value]="infos[i].airScore"></sui-progress>
+        </div>
+      </div>
+
+      <!-- duration -->
+      <div class="ui grid">
+        <div class="two wide column">
+          <i class="icon large hourglass half"></i>
+        </div>
+        <div class="fourteen wide column">
+          <h3>Duration: {{infos[i].duration}} hours</h3>
+        </div>
+      </div>
+
+      <!-- duration -->
+      <div class="ui grid">
+        <div class="two wide column">
+          <i class="icon large road"></i>
+        </div>
+        <div class="fourteen wide column">
+          <h3>Distance: {{infos[i].distance/1000}} km</h3>
+        </div>
+      </div>
+
+      <!-- copy text -->
+      <br>
+      <a class="ui blue fluid button" target="_blank" href="{{infos[i].url}}">Let's drive!</a>
+
+    </div>
+  </div>
+</div>
+
+
+
+<p>
+  <ngui-map style="height:1200px" zoom="13" center="Bucharest">
+    <directions-renderer panel="#my-panel" (directions_changed)="directionsChanged()" [directions-request]="direction" [suppressMarkers]="true">
+    </directions-renderer>
+    {{wi[selectedRoute]}}
+    <marker *ngFor="let info of wi[selectedRoute]; let i = index" [position]="[direction.waypoints[i].location.lat, direction.waypoints[i].location.lng]"
+      [icon]="getIcon(info.info.w)">
+    </marker>
+    <marker *ngFor="let p of pois; let i = index" [position]="[p.lat, p.lng]" (click)="clicked($event); clickedNow = i">
+    </marker>
+    <info-window id="iw">
+      <div>
+        {{marker.name}}
+      </div>
+      <a href={{createLink(marker.name)}} class="ui blue fluid button" target="_blank">Search on Google</a>
+    </info-window>
+  </ngui-map>
+</p>
+
+
+<div id="logout">
+  <h2 class="ui center aligned icon header">
+    <img src="{{user.photo}} " class="ui circular image "> {{user.name}}
+  </h2>
+  <button class="ui black bottom attached fluid button" (click)="logout()">Logout</button>
+</div>
+
+<!-- <app-loading-search *ngIf="searching " style="height:1200px; "></app-loading-search> -->
+
+<div *ngIf="searching" class="ui segment" id="loading">
+  <span>{{route.origin}}</span>
+  <span>
+    <i class="icon compass"></i>
+  </span>
+  <span>{{route.destination}}</span>
+</div>
