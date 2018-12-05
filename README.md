@@ -1,6 +1,6 @@
 # Mapify
-## Plan your vacation trip with ease.
-## This repo represents the frontend for the Mapify app.
+Plan your vacation trip with ease.\
+This repo represents the frontend for the Mapify app.
 
 ## Development server
 
