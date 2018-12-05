@@ -1,6 +1,9 @@
 # Mapify
 Plan your vacation trip with ease.\
-This repo represents the frontend for the Mapify app.
+This repo represents the frontend for the Mapify app.\
+\
+Stack: Angular\
+Languages: HTML, CSS, Typescript
 
 ## Development server
 
